@@ -6,23 +6,23 @@
     <title>Phaze | Home</title>
     <!-- Favicon -->
     <link rel="icon" href="static/phaze-favicon.png">
-    	<!-- CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Radio+Canada+Big:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Radio+Canada+Big:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
     <style>
         /* Global styles */
         body {
-	    font-family: "Radio Canada Big", sans-serif;
-            background-color: #848484; /* Set body background color */
+            font-family: "Radio Canada Big", sans-serif;
+            background-color: #3f3f3f; /* Set body background color */
             color: #5a6cd9; /* Set text color */
         }
         
         /* Navbar styles */
         .navbar {
-	    font-family: "Radio Canada Big", sans-serif;
-            background: #848484
+            font-family: "Radio Canada Big", sans-serif;
+            background-color: #848484;
             animation: fadeInDown 1s ease; /* Navbar animation */
         }
         
@@ -55,11 +55,12 @@
         
         /* Team section background */
         #team {
-            background-color: #fff; /* Set team section background color */
+            background-color: #3f3f3f; /* Set team section background color */
         }
         
         /* Footer */
         footer {
+            font-family: "Radio Canada Big", sans-serif;
             background-color: #848484; /* Set footer background color */
             color: #5a6cd9; /* Set footer text color */
         }
@@ -75,72 +76,60 @@
                 transform: translateY(0);
             }
         }
+        
+        h1 {
+            text-align: center;
+        }
 
-        /* Team section background */
-        #team {
-            background-color: #3f3f3f; /* Set team section background color to orange */
+        /* Button styles */
+        .btn-primary {
+            background-color: #435bf0; /* Set button background color */
+            border-color: #435bf0; /* Set button border color */
         }
         
-        /* Footer */
-        footer {
-	    font-family: "Radio Canada Big", sans-serif;
-            background: #848484
-            color: #5a6cd9; /* Set footer text color */
+        .btn-primary:hover {
+            background-color: #8a97e4; /* Set button background color on hover */
+            border-color: #8a97e4; /* Set button border color on hover */
         }
-
-        h1 {
-    	    text-align: center;
-	    }
-
-	/* Button styles */
-	.btn-primary {
-	    background-color: #435bf0; /* Set button background color to orange */
-	    border-color: #435bf0; /* Set button border color to orange */
-	}
-	
-	.btn-primary:hover {
-	    background-color: #8a97e4; /* Set button background color on hover to a lighter shade of orange */
-	    border-color: #8a97e4; /* Set button border color on hover to a lighter shade of orange */
-	}
-	.button-primary.active {
-	    background-color: rgb(0, 128, 255); /* Color after click */
-	    color: white;
-	}
-	
-	/* Card styles */
-	.card {
-	    background-color: #6a7add; /* Set card background color to #ffad00ff */
-	}
-	    
+        
+        .button-primary.active {
+            background-color: rgb(0, 128, 255); /* Color after click */
+            color: white;
+        }
+        
+        /* Card styles */
+        .card {
+            background-color: #6a7add; /* Set card background color */
+        }
+            
         .card-title,
         .card-text {
-            color: #5a6cd9; /* Set card title and text color to #ff4000 */
+            color: #5a6cd9; /* Set card title and text color */
         }
 
         .navbar .navbar-brand {
             color: #5a6cd9 !important;
-        }	
+        }    
 
-	.button-primary:active {
-	  background-color: rgb(0, 128, 255) !important;
-	}
+        .button-primary:active {
+            background-color: rgb(0, 128, 255) !important;
+        }
     </style>
 </head>
-<body>
-	
-       <!-- Navbar (sit on top) -->
+    
+    <!-- Navbar (sit on top) -->
     <nav class="navbar navbar-expand-lg navbar-light">
         <a class="navbar-brand" href="/">Phaze</a>
         <!-- Toggle button for small screens -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-	{% if current_user.is_authenticated %}    
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="/#main-content">What is Phaze?</a>
                 </li>
+                {% if current_user.is_authenticated %}    
                 <li class="nav-item">
                     <a class="nav-link" href="/create">Create a Charity</a>
                 </li>
@@ -150,36 +139,22 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/logout">Log Out</a>
                 </li>
-            </ul>
-        </div>
-	{% else %}
-	<div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/#main-content">What is Phaze?</a>
-                </li>
+                {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="/login">Log In</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/signup">Sign Up</a>
                 </li>
+                {% endif %}
             </ul>
-	{% endif %}
-        </div>    
+        </div>
     </nav>
 
     <!-- Add space here -->
     <div style="margin-top: 25px;"></div>
-	
-<body>
-	{% if current_user.is_authenticated %}
-<h1>You are logged in to Phaze</h1>
-	{% else %}
-<h1>You are not logged in to Phaze</h1>
-	{% endif %}
-</body>
 
+<body>
     <!-- Main Content -->
     <section id="main-content" class="container mt-5">
         <div class="row">
@@ -194,11 +169,11 @@
         </div>
     </section>
 
-	<!-- Add space here -->
+    <!-- Add space here -->
     <div style="margin-top: 12.5px;"></div>
-	
-<hr>
-	
+    
+    <hr>
+    
     <!-- Add space here -->
     <div style="margin-top: 12.5px;"></div>
 
@@ -235,10 +210,10 @@
         </div>
     </section>
 
-<!-- Footer -->
-<footer class="bg-light text-black text-center p-4">
-    &copy; 2024 Alex Sheng and Dhruv Rakhade. All rights reserved.
-</footer>
+    <!-- Footer -->
+    <footer class="text-center p-4">
+        &copy; 2024 Alex Sheng and Dhruv Rakhade. All rights reserved.
+    </footer>
 
     <!-- Bootstrap & jQuery JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
