@@ -1,1 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phaze | Home</title>
+    <!-- Favicon -->
+    <link rel="icon" href="static/phaze-favicon.png">
+    	<!-- CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Radio+Canada+Big:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <style>
+        /* Global styles */
+        body {
+	    font-family: "Radio Canada Big", sans-serif;
+            background-color: #ff7f00; /* Set body background color */
+            color: #fff176; /* Set text color */
+        }
+        
+        /* Navbar styles */
+        .navbar {
+	    font-family: "Radio Canada Big", sans-serif;
+            background: linear-gradient(to right, #f44533, #ff7f00, #ff9600); /* Gradient background */
+            animation: fadeInDown 1s ease; /* Navbar animation */
+        }
+        
+        .navbar-light .navbar-nav .nav-link {
+            color: #fff176; /* Set navbar link color */
+        }
+        
+        .navbar-light .navbar-nav .nav-link:hover {
+            color: #fff; /* Set navbar link color on hover */
+        }
+        
+        /* Card image container */
+        .card-img-container {
+            height: 250px; /* Adjust this */
+            overflow: hidden;
+        }
+        
+        .card-img-container img {
+            object-fit: cover;
+            height: 100%;
+            width: 100%;
+        }
+        
+        /* Social icon */
+        .social-icon {
+            width: 20px; /* Adjust this */
+            height: auto; /* Adjust this */
+            margin: 0 5px;
+        }
+        
+        /* Team section background */
+        #team {
+            background-color: #fff; /* Set team section background color */
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #f8f9fa; /* Set footer background color */
+            color: #212529; /* Set footer text color */
+        }
+        
+        /* Animation */
+        @keyframes fadeInDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
+        /* Team section background */
+        #team {
+            background-color: #ff7f00; /* Set team section background color to orange */
+        }
+        
+        /* Footer */
+        footer {
+	    font-family: "Radio Canada Big", sans-serif;
+            background: linear-gradient(to right, #f44533, #ff7f00, #ff9600); /* Gradient background */
+            color: #fff176; /* Set footer text color */
+        }
+
+        h1 {
+    	    text-align: center;
+	    }
+
+	/* Button styles */
+	.btn-primary {
+	    background-color: #ff7f00; /* Set button background color to orange */
+	    border-color: #ff7f00; /* Set button border color to orange */
+	}
+	
+	.btn-primary:hover {
+	    background-color: #ff9600; /* Set button background color on hover to a lighter shade of orange */
+	    border-color: #ff9600; /* Set button border color on hover to a lighter shade of orange */
+	}
+	.button-primary.active {
+	    background-color: orange; /* Color after click */
+	    color: white;
+	}
+	
+	/* Card styles */
+	.card {
+	    background-color: #ffad00ff; /* Set card background color to #ffad00ff */
+	}
+	    
+        .card-title,
+        .card-text {
+            color: #ff4000; /* Set card title and text color to #ff4000 */
+        }
+
+        .navbar .navbar-brand {
+            color: #fff176 !important;
+        }	
+
+	.button-primary:active {
+	  background-color: orange !important;
+	}
+    </style>
+</head>
+<body>
+	
+       <!-- Navbar (sit on top) -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="/">Blaze</a>
+        <!-- Toggle button for small screens -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+	{% if current_user.is_authenticated %}    
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/#main-content">What is Phaze?</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/create">Create a Charity</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/search">Find a Charity</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Log Out</a>
+                </li>
+            </ul>
+        </div>
+	{% else %}
+	<div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/#main-content">What is Phaze?</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Log In</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/signup">Sign Up</a>
+                </li>
+            </ul>
+	{% endif %}
+        </div>    
+    </nav>
+
+    <!-- Add space here -->
+    <div style="margin-top: 25px;"></div>
+	
+<body>
+	{% if current_user.is_authenticated %}
+<h1>You are logged in to Phaze</h1>
+	{% else %}
+<h1>You are not logged in to Phaze</h1>
+	{% endif %}
+</body>
+
+    <!-- Main Content -->
+    <section id="main-content" class="container mt-5">
+        <div class="row">
+            <div class="col-md-6">
+                <img src="static/blaze.png" alt="" class="img-fluid">
+            </div>
+            <div class="col-md-6">
+                <h2>Phaze</h2>
+                <p>The New Phase of Giving Can Start Now</p>
+                <p>diversity and needy thingies placeholder for now</p>
+            </div>
+        </div>
+    </section>
+
+	<!-- Add space here -->
+    <div style="margin-top: 12.5px;"></div>
+	
+<hr>
+	
+    <!-- Add space here -->
+    <div style="margin-top: 12.5px;"></div>
+
+    <!-- Team Section -->
+    <section id="team" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">Team</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-img-container">
+                            <img src="static/Alex.jpg" alt="Alex">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Alex Sheng</h5>
+                            <p class="card-text">Student at Princeton High School</p>
+                            <a href="https://intrepidbird.me" class="btn btn-primary" target="_blank">Website</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-img-container">
+                            <img src="static/Dhruv.jpg" alt="Dhruv">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Dhruv Rakhade</h5>
+                            <p class="card-text">Student at Bridgewater-Raritan High School</p>
+                            <a href="https://pointysphere.github.io" class="btn btn-primary" target="_blank">Website</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- Footer -->
+<footer class="bg-light text-black text-center p-4">
+    &copy; 2024 Alex Sheng and Dhruv Rakhade. All rights reserved.
+</footer>
+
+    <!-- Bootstrap & jQuery JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
