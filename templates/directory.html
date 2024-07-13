@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blaze | Log In</title>
+    <title>Blaze | Wiki List</title>
     <!-- Favicon -->
     <link rel="icon" href="static/blaze-favicon.png">
     <!-- CSS -->
@@ -14,14 +14,14 @@
     <style>
         /* Global styles */
         body {
-	    font-family: "Radio Canada Big", sans-serif;
+            font-family: "Radio Canada Big", sans-serif;
             background-color: #ff7f00; /* Set body background color */
             color: #fff176; /* Set text color */
         }
         
         /* Navbar styles */
         .navbar {
-	    font-family: "Radio Canada Big", sans-serif;
+            font-family: "Radio Canada Big", sans-serif;
             background: linear-gradient(to right, #f44533, #ff7f00, #ff9600); /* Gradient background */
             animation: fadeInDown 1s ease; /* Navbar animation */
         }
@@ -83,70 +83,47 @@
         
         /* Footer */
         footer {
-	    font-family: "Radio Canada Big", sans-serif;
+            font-family: "Radio Canada Big", sans-serif;
             background: linear-gradient(to right, #f44533, #ff7f00, #ff9600); /* Gradient background */
             color: #fff176; /* Set footer text color */
         }
 
         h1 {
-    	    text-align: center;
-	    }
+            text-align: center;
+        }
 
-	/* Button styles */
-	.btn-primary {
-	    background-color: #ff7f00; /* Set button background color to orange */
-	    border-color: #ff7f00; /* Set button border color to orange */
-	}
-	
-	.btn-primary:hover {
-	    background-color: #ff9600; /* Set button background color on hover to a lighter shade of orange */
-	    border-color: #ff9600; /* Set button border color on hover to a lighter shade of orange */
-	}
-	
-	/* Card styles */
-	.card {
-	    background-color: #ffad00ff; /* Set card background color to #ffad00ff */
-	}
+        /* Button styles */
+        .btn-primary {
+            background-color: #ff7f00; /* Set button background color to orange */
+            border-color: #ff7f00; /* Set button border color to orange */
+        }
+        
+        .btn-primary:hover {
+            background-color: #ff9600; /* Set button background color on hover to a lighter shade of orange */
+            border-color: #ff9600; /* Set button border color on hover to a lighter shade of orange */
+        }
+        
+        /* Card styles */
+        .card {
+            background-color: #ffad00ff; /* Set card background color to #ffad00ff */
+        }
+            
+        .card-title,
+        .card-text {
+            color: #ff4000; /* Set card title and text color to #ff4000 */
+        }
 
         .navbar .navbar-brand {
             color: #fff176 !important;
-        }	
+        }   
 
-	input[type="text"],
-	input[type="password"] {
-    		width: 100%;
-    		padding: 10px;
-    		border: 1px solid #f44533;
-    		border-radius: 5px;
-	}	
-
-	form {
-    		background-color: #ffad00ff;
-		padding: 20px;
-    		border-radius: 10px;
-   		box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
-    		color: inherit;
-	}
-
-	button {
-    		background-color: #ff7f00;
-    		color: #fff176; 
-    		border: none;
-	}
-	    
-        input[type="submit"] {
-            background-color: darkorange;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-size: 16px;
-            border-radius: 5px;
+        form {
+            text-align: center;
         }
     </style>
 </head>
 <body>
-
+    
     <!-- Navbar (sit on top) -->
     <nav class="navbar navbar-expand-lg navbar-light">
         <a class="navbar-brand" href="/">Blaze</a>
@@ -154,7 +131,9 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        {% if current_user.is_authenticated %}
+        
+        <!-- Check if user is authenticated -->
+        {% if current_user.is_authenticated %}    
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
@@ -184,41 +163,70 @@
                     <a class="nav-link" href="/signup">Sign Up</a>
                 </li>
             </ul>
+        </div>
         {% endif %}
-        </div>    
     </nav>
 
     <!-- Add space here -->
-    <div style="margin-top: 25px;"></div>
-    <main class="container">
-        <section id="login">
-                <h1>Login to your account</h1>
-                <div style="margin-top: 25px;"></div>
-                <form method="POST" action="">
-                    {{ login_form.hidden_tag() }}
-		            <p>Username:</p>
-                        {{ login_form.username(placeholder = "Username") }}
-		            <div style="margin-top: 25px;"></div>    
-		            <p>Password:</p>
-                        {{ login_form.password(placeholder = "Password") }}
-		            <div style="margin-top: 5px;"></div>
-                        {{ login_form.submit() }}
-                </form>
-            <div style="margin-top: 5px;"></div>
-            <p class="form-footer">Don't have an account? <a href="/signup">Sign up</a></p>
-        </section>
-    </main>
+    <div style="margin-top: 15px;"></div>
+
+    <h1>Wikis List</h1>
+    
+    <!-- Add space here -->
+    <div style="margin-top: 15px;"></div>
+
+    <form method="GET">
+        <select name="keyword">
+            <option value="">All Charities</option>
+            {% for keyword, keyword_name in keywords.items() %}
+                <option value="{{ keyword }}">{{ keyword_name }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Filter">
+    </form>
+    
+    <!-- Add space here -->
+    <div style="margin-top: 15px;"></div>
+
+    <!-- Blog Posts -->
+    <section id="posts" class="container mt-5">
+        <div class="row">
+            {% for charity in charities %}
+            <!-- Charity Card -->
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ charity.name }}</h5>
+                        <p>Website: <a href="https://{{ charity.site }}">{{ charity.site }}</a></p>
+                        <p>Address: {{ charity.address }}</p>
+                        <p>Number: {{ charity.number }}</p>
+                        <p>Description: {{ charity.description }}</p>
+                        <p>Organization Type: {{ charity.orgtype }}</p>
+                        <p>Keywords:</p>
+                        <ul>
+                            {% for keyword in charity.keywords %}
+                                <li>{{ keyword.word }}</li>
+                            {% endfor %}
+                        </ul>                    
+                        <a href="/charity/{{ charity.name|lower|replace(' ', '') }}" class="btn btn-primary">View Map</a>
+                    </div>
+                </div>
+            </div>
+            <!-- End Charity Card -->
+            {% endfor %}
+        </div>
+    </section>
 
     <!-- Add space here -->
     <div style="margin-top: 250px;"></div>
-
+    
     <!-- Footer -->
     <footer class="bg-light text-black text-center p-4">
         &copy; 2024 SigmaCS. All rights reserved.
     </footer>
 
     <!-- Bootstrap & jQuery JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://aajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

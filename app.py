@@ -1,13 +1,11 @@
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, flash
 from flask_login import UserMixin, LoginManager, login_user, logout_user, current_user
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from flask_bcrypt import Bcrypt
-from wtforms import StringField, PasswordField, SubmitField, TextAreaField
+from wtforms import widgets, StringField, PasswordField, SubmitField, TextAreaField, RadioField, SelectMultipleField
 from wtforms.validators import DataRequired
-from werkzeug.utils import secure_filename
-import markdown 
-import markdown.extensions.fenced_code
+from sqlalchemy.orm import relationship, joinedload
 import os
 
 app = Flask(__name__)
@@ -29,22 +27,29 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(128), unique = True, nullable = False)
     password = db.Column(db.String(128), nullable = False)
 
-class Wiki(db.Model):
+class Keyword(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    word = db.Column(db.String(128), nullable=False)
+    charity_id = db.Column(db.Integer, db.ForeignKey('charity.id'), nullable=False)
+
+class Charity(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(128), nullable = False)
-    pages = db.relationship('Page', backref='wiki', lazy=True)
-
-class Page(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(128), nullable=False)
-    content = db.Column(db.Text, nullable=False)
-    wiki_id = db.Column(db.Integer, db.ForeignKey('wiki.id'), nullable=False) 
-
+    site = db.Column(db.String(128), unique = True, nullable = False)
+    address = db.Column(db.String(128), nullable = False)
+    number = db.Column(db.String(128), unique = True, nullable = False)
+    description = db.Column(db.String(280), unique = True, nullable = False)
+    orgtype = db.Column(db.String(128), nullable = False)
+    keywords = relationship('Keyword', backref='charity', lazy=True)
 
 db.init_app(app)
  
 app.app_context().push()
 db.create_all()
+
+class MultiCheckboxField(SelectMultipleField):
+    widget = widgets.ListWidget(prefix_label=False)
+    option_widget = widgets.CheckboxInput()
 
 class SignUpForm(FlaskForm):
     username = StringField('Username', validators = [DataRequired()])
@@ -56,15 +61,30 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators = [DataRequired()])
     submit = SubmitField('Log In')
 
-class CreateWikiForm(FlaskForm):
-    name = StringField('Wiki Name', validators=[DataRequired()])
-    home = TextAreaField('Home Page Content', validators=[DataRequired()])
-    submit = SubmitField('Create Wiki')
-
-class CreatePageForm(FlaskForm):
-    name = StringField('Page Name', validators=[DataRequired()])
-    page = TextAreaField('Page Content', validators=[DataRequired()])
-    submit = SubmitField('Create Page')
+class UploadCharityForm(FlaskForm):
+    name = StringField('Charity Name', validators=[DataRequired()])
+    site = StringField('Website', validators=[DataRequired()])
+    address = StringField('Address', validators=[DataRequired()])
+    number = StringField('Number', validators=[DataRequired()])
+    description = TextAreaField('Page Content', validators=[DataRequired()])
+    orgtype =  RadioField('Organization Type', choices=[('501(c)(1)','501(c)(1)'), ('501(c)(3)','501(c)(3)'), ('501(c)(4)','501(c)(4)'), ('501(c)(8)','501(c)(8)'), ('501(c)(10)','501(c)(10)'), ('501(c)(13)','501(c)(13)'), ('501(c)(19)','501(c)(19)'), ('501(c)(23)','501(c)(23)'), ('527', '527'), ('Other','Other')])
+    keywords = MultiCheckboxField('Keywords',
+                                   choices=[
+                                       ('Disaster Relief', 'Disaster Relief'),
+                                       ('Humanitarian Aid', 'Humanitarian Aid'),
+                                       ('Refugee/Immigrant Assistance', 'Refugee/Immigrant Assistance'),
+                                       ('Mental Health', 'Mental Health'),
+                                       ('Education/Literacy', 'Education/Literacy'),
+                                       ('Environmental Conservation/Climate Change', 'Environmental Conservation/Climate Change'),
+                                       ('Human Rights', 'Human Rights'),
+                                       ('Animal Welfare', 'Animal Welfare'),
+                                       ('Homelessness', 'Homelessness'),
+                                       ('Social Justice/Civil Rights', 'Social Justice/Civil Rights'),
+                                       ('Hunger', 'Hunger'),
+                                       ('Religious', 'Religious'),
+                                       ('Other', 'Other')
+                                   ])
+    submit = SubmitField('Upload Charity')
 
 @app.route('/signup', methods=["GET", "POST"])
 def sign_up():
@@ -72,11 +92,16 @@ def sign_up():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     elif form.validate_on_submit():
-        password_hash = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User(username = form.username.data, password = password_hash)
-        db.session.add(user)
-        db.session.commit()
-        return redirect(url_for('login'))
+        existing_user = User.query.filter_by(username=form.username.data).first()
+        if existing_user:
+            flash('That username is already taken. Please choose a different one.', 'danger')
+            return render_template('signup.html', signup_form=form)
+        else:
+            password_hash = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+            user = User(username=form.username.data, password=password_hash)
+            db.session.add(user)
+            db.session.commit()
+            return redirect(url_for('login'))
     return render_template('signup.html', signup_form=form)
 
 
@@ -90,12 +115,52 @@ def login():
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user)
             return redirect(url_for('index'))
+        else:
+            flash('Incorrect username or password. Try again.', 'danger')
+            return render_template('signup.html', signup_form=form)
     return render_template('login.html', login_form=form)
 
 @app.route("/logout")
 def logout():
     logout_user()
     return redirect(url_for("index"))
+
+@app.route('/uploadcharity', methods=["GET", "POST"])
+def uploadcharity():
+    if current_user.is_authenticated:
+        form = UploadCharityForm()
+        if form.validate_on_submit():
+            charity = Charity(name=form.name.data, site=form.site.data, address=form.address.data, number=form.number.data, description=form.description.data, orgtype=form.orgtype.data, keywords=[Keyword(word=keyword, charity_id=current_user.id) for keyword in form.keywords.data])
+            db.session.add(charity)
+            db.session.commit()
+            return redirect(url_for('index'))
+        return render_template('uploadcharity.html', uploadcharity_form=form) 
+    else:
+        return redirect(url_for("login"))
+
+@app.route("/directory")
+def directory():
+    keywords_list = [
+        "Disaster Relief",
+        "Humanitarian Aid",
+        "Refugee/Immigrant Assistance",
+        "Mental Health",
+        "Education/Literacy",
+        "Environmental Conservation/Climate Change",
+        "Human Rights",
+        "Animal Welfare",
+        "Homelessness",
+        "Social Justice/Civil Rights",
+        "Hunger",
+        "Religious,"
+        "Other"
+    ]
+    keywords_dict = {keyword: keyword for keyword in keywords_list}
+    selected_keyword = request.args.get('keyword', '')
+    charities = Charity.query.all()
+    if selected_keyword:
+        charities = [charity for charity in charities if any(keyword.word == selected_keyword for keyword in charity.keywords)]
+    return render_template('directory.html', charities=charities, keywords=keywords_dict)
 
 @app.route("/")
 def index():
