@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blaze | Log In</title>
+    <title>Phaze | Log In</title>
     <!-- Favicon -->
     <link rel="icon" href="static/blaze-favicon.png">
     <!-- CSS -->
@@ -12,26 +12,26 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Radio+Canada+Big:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
     <style>
-        /* Global styles */
+         /* Global styles */
         body {
-	    font-family: "Radio Canada Big", sans-serif;
-            background-color: #ff7f00; /* Set body background color */
-            color: #fff176; /* Set text color */
+            font-family: "Radio Canada Big", sans-serif;
+            background-color: #005390; /* Set body background color */
+            color: #42cfff; /* Set text color */
         }
         
         /* Navbar styles */
         .navbar {
-	    font-family: "Radio Canada Big", sans-serif;
-            background: linear-gradient(to right, #f44533, #ff7f00, #ff9600); /* Gradient background */
+            font-family: "Radio Canada Big", sans-serif;
+            background-color: #007fff;
             animation: fadeInDown 1s ease; /* Navbar animation */
         }
         
         .navbar-light .navbar-nav .nav-link {
-            color: #fff176; /* Set navbar link color */
+            color: #01289e; /* Set navbar link color */
         }
         
         .navbar-light .navbar-nav .nav-link:hover {
-            color: #fff; /* Set navbar link color on hover */
+            color: #00ffff; /* Set navbar link color on hover */
         }
         
         /* Card image container */
@@ -55,14 +55,16 @@
         
         /* Team section background */
         #team {
-            background-color: #fff; /* Set team section background color */
+            background-color: #005390; /* Set team section background color */
         }
         
         /* Footer */
         footer {
-            background-color: #f8f9fa; /* Set footer background color */
-            color: #212529; /* Set footer text color */
+            font-family: "Radio Canada Big", sans-serif;
+            background-color: #007fff !important; /* Set footer background color */
+            color: #01289e; /* Set footer text color */
         }
+
         
         /* Animation */
         @keyframes fadeInDown {
@@ -75,67 +77,65 @@
                 transform: translateY(0);
             }
         }
+        
+        h1 {
+            text-align: center;
+        }
 
-        /* Team section background */
-        #team {
-            background-color: #ff7f00; /* Set team section background color to orange */
+        /* Button styles */
+        .btn-primary {
+            background-color: #435bf0; /* Set button background color */
+            border-color: #435bf0; /* Set button border color */
         }
         
-        /* Footer */
-        footer {
-	    font-family: "Radio Canada Big", sans-serif;
-            background: linear-gradient(to right, #f44533, #ff7f00, #ff9600); /* Gradient background */
-            color: #fff176; /* Set footer text color */
+        .btn-primary:hover {
+            background-color: #0026ff; /* Set button background color on hover */
+            border-color: #0026ff; /* Set button border color on hover */
+        }
+        
+        .button-primary.active {
+            background-color: rgb(0, 128, 255); /* Color after click */
+            color: white;
+        }
+        
+        /* Card styles */
+        .card {
+            background-color: #1E90FF; /* Set card background color */
+        }
+            
+        .card-title,
+        .card-text {
+            color: #000080; /* Set card title and text color */
         }
 
-        h1 {
-    	    text-align: center;
-	    }
-
-	/* Button styles */
-	.btn-primary {
-	    background-color: #ff7f00; /* Set button background color to orange */
-	    border-color: #ff7f00; /* Set button border color to orange */
-	}
-	
-	.btn-primary:hover {
-	    background-color: #ff9600; /* Set button background color on hover to a lighter shade of orange */
-	    border-color: #ff9600; /* Set button border color on hover to a lighter shade of orange */
-	}
-	
-	/* Card styles */
-	.card {
-	    background-color: #ffad00ff; /* Set card background color to #ffad00ff */
-	}
-
         .navbar .navbar-brand {
-            color: #fff176 !important;
-        }	
+            color: #01289e !important;
+        }    
+
+        .button-primary:active {
+            background-color: rgb(0, 128, 255) !important;
+        }
+
 
 	input[type="text"],
 	input[type="password"] {
     		width: 100%;
     		padding: 10px;
-    		border: 1px solid #f44533;
+    		border: 1px solid #000080;
     		border-radius: 5px;
 	}	
 
 	form {
-    		background-color: #ffad00ff;
+    		background-color: #1E90FF;
+		color: #000080 !important;
 		padding: 20px;
     		border-radius: 10px;
    		box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
     		color: inherit;
 	}
-
-	button {
-    		background-color: #ff7f00;
-    		color: #fff176; 
-    		border: none;
-	}
 	    
         input[type="submit"] {
-            background-color: darkorange;
+            background-color: #000080;
             color: white;
             border: none;
             padding: 10px 20px;
@@ -149,7 +149,7 @@
 
     <!-- Navbar (sit on top) -->
     <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="/">Blaze</a>
+        <a class="navbar-brand" href="/">Phaze</a>
         <!-- Toggle button for small screens -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -158,13 +158,13 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/#main-content">What is Blaze?</a>
+                    <a class="nav-link" href="/#main-content">What is Phaze?</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/createwiki">Create a Wiki</a>
+                    <a class="nav-link" href="/uploadcharity">Make a Charity</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/wikilist">View Wikis</a>
+                    <a class="nav-link" href="/directory">View All Charities</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/logout">Log Out</a>
@@ -175,7 +175,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/#main-content">What is Blaze?</a>
+                    <a class="nav-link" href="/#main-content">What is Phaze?</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/login">Log In</a>
@@ -214,7 +214,7 @@
 
     <!-- Footer -->
     <footer class="bg-light text-black text-center p-4">
-        &copy; 2024 SigmaCS. All rights reserved.
+        &copy; 2024 Alex Sheng, Dhruv Rakhade, and Tharun Naguleswaran. All rights reserved.
     </footer>
 
     <!-- Bootstrap & jQuery JS -->
