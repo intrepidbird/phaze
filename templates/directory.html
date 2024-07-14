@@ -200,16 +200,18 @@
     <!-- Add space here -->
     <div style="margin-top: 15px;"></div>
 
-    <form method="GET">
-        <select name="keyword">
-            <option value="">All Charities</option>
-            {% for keyword, keyword_name in keywords.items() %}
-                <option value="{{ keyword }}">{{ keyword_name }}</option>
-            {% endfor %}
-        </select>
-        <input type="submit" value="Filter">
-    </form>
-    
+    <div class="container" style="max-width: 80%; text-align: center;">
+        <form method="GET">
+            <select name="keyword">
+                <option value="">All Charities</option>
+                {% for keyword, keyword_name in keywords.items() %}
+                    <option value="{{ keyword }}">{{ keyword_name }}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Filter">
+        </form>
+    </div>
+
     <!-- Add space here -->
     <div style="margin-top: 15px;"></div>
 
