@@ -6,11 +6,13 @@
     <title>Phaze | Charity Map</title>
     <!-- Favicon -->
     <link rel="icon" href="static/phaze-favicon.png">
-    	<!-- CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Radio+Canada+Big:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Radio+Canada+Big:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <style>
         /* Global styles */
         body {
@@ -116,24 +118,23 @@
             background-color: rgb(0, 128, 255) !important;
         }
 
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #000080;
+            border-radius: 5px;
+        }   
 
-	input[type="text"],
-	input[type="password"] {
-    		width: 100%;
-    		padding: 10px;
-    		border: 1px solid #000080;
-    		border-radius: 5px;
-	}	
-
-	form {
-    		background-color: #1E90FF;
-		color: #000080 !important;
-		padding: 20px;
-    		border-radius: 10px;
-   		box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
-    		color: inherit;
-	}
-	    
+        form {
+            background-color: #1E90FF;
+            color: #000080 !important;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+            color: inherit;
+        }
+        
         input[type="submit"] {
             background-color: #000080;
             color: white;
@@ -143,52 +144,53 @@
             font-size: 16px;
             border-radius: 5px;
         }
+
+        /* Map container */
+        #map {
+            height: 500px; /* Adjust the height as needed */
+        }
     </style>
 </head>
 <body>
-	
-       <!-- Navbar (sit on top) -->
+    
+    <!-- Navbar (sit on top) -->
     <nav class="navbar navbar-expand-lg navbar-light">
         <a class="navbar-brand" href="/">Phaze</a>
         <!-- Toggle button for small screens -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-	{% if current_user.is_authenticated %}    
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/#main-content">What is Phaze?</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/addcharity">Add a Charity</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/directory">Directory</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/map">Map</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/logout">Log Out</a>
-                </li>
+                {% if user.is_authenticated %}    
+                    <li class="nav-item">
+                        <a class="nav-link" href="/#main-content">What is Phaze?</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/addcharity">Add a Charity</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/directory">Directory</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/map">Map</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Log Out</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/#main-content">What is Phaze?</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Log In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/signup">Sign Up</a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
-	{% else %}
-	<div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/#main-content">What is Phaze?</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/login">Log In</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/signup">Sign Up</a>
-                </li>
-            </ul>
-	{% endif %}
-        </div>    
     </nav>
 
     <!-- Add space here -->
@@ -198,20 +200,22 @@
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
         var map = L.map('map').setView([30, -40], 3); 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '© OpenStreetMap contributors'}).addTo(map);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
         {% for charity in charities %}
             L.marker([{{ charity.latitude }}, {{ charity.longitude }}]).addTo(map)
-            .bindPopup("<strong>Name:</strong> {{ charity.name }}<br><strong>Address:</strong> {{ charity.address }}<br><strong>Phone:</strong> {{ charity.number }}<br><strong>Website:</strong> {{ charity.site }}<br><strong>Organization Type:</strong> {{ charity.orgtype }}<br><strong>Keywords: </strong>{{ charity.keywords_list }}")
+            .bindPopup("<strong>Name:</strong> {{ charity.name }}<br><strong>Address:</strong> {{ charity.address }}<br><strong>Phone:</strong> {{ charity.number }}<br><strong>Website:</strong> <a href='{{ charity.site }}'>{{ charity.site }}</a><br><strong>Organization Type:</strong> {{ charity.orgtype }}<br><strong>Keywords: </strong>{{ charity.keywords_list }}");
         {% endfor %}
     </script>
 
     <!-- Add space here -->
     <div style="margin-top: 500px;"></div>
 
-<!-- Footer -->
-<footer class="text-center p-4">
-    &copy; 2024 Dhruv Rakhade, Alex Sheng, and Tharun Naguleswaran. All rights reserved.
-</footer>
+    <!-- Footer -->
+    <footer class="text-center p-4">
+        &copy; 2024 Dhruv Rakhade, Alex Sheng, and Tharun Naguleswaran. All rights reserved.
+    </footer>
 
     <!-- Bootstrap & jQuery JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
