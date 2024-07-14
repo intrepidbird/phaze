@@ -61,7 +61,7 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators = [DataRequired()])
     submit = SubmitField('Log In')
 
-class UploadCharityForm(FlaskForm):
+class AddCharityForm(FlaskForm):
     name = StringField('Charity Name', validators=[DataRequired()])
     site = StringField('Website', validators=[DataRequired()])
     address = StringField('Address', validators=[DataRequired()])
@@ -84,7 +84,7 @@ class UploadCharityForm(FlaskForm):
                                        ('Religious', 'Religious'),
                                        ('Other', 'Other')
                                    ])
-    submit = SubmitField('Upload Charity')
+    submit = SubmitField('Add Charity')
 
 @app.route('/signup', methods=["GET", "POST"])
 def sign_up():
@@ -117,7 +117,7 @@ def login():
             return redirect(url_for('index'))
         else:
             flash('Incorrect username or password. Try again.', 'danger')
-            return render_template('signup.html', signup_form=form)
+            return render_template('login.html', login_form=form)
     return render_template('login.html', login_form=form)
 
 @app.route("/logout")
@@ -125,16 +125,16 @@ def logout():
     logout_user()
     return redirect(url_for("index"))
 
-@app.route('/uploadcharity', methods=["GET", "POST"])
-def uploadcharity():
+@app.route('/addcharity', methods=["GET", "POST"])
+def addcharity():
     if current_user.is_authenticated:
-        form = UploadCharityForm()
+        form = AddCharityForm()
         if form.validate_on_submit():
             charity = Charity(name=form.name.data, site=form.site.data, address=form.address.data, number=form.number.data, description=form.description.data, orgtype=form.orgtype.data, keywords=[Keyword(word=keyword, charity_id=current_user.id) for keyword in form.keywords.data])
             db.session.add(charity)
             db.session.commit()
             return redirect(url_for('index'))
-        return render_template('uploadcharity.html', uploadcharity_form=form) 
+        return render_template('addcharity.html', addcharity_form=form) 
     else:
         return redirect(url_for("login"))
 

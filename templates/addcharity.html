@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phaze | Create Charity</title>
+    <title>Phaze | Add Charity</title>
     <!-- Favicon -->
     <link rel="icon" href="static/phaze-favicon.png">
     	<!-- CSS -->
@@ -161,7 +161,7 @@
                     <a class="nav-link" href="/#main-content">What is Phaze?</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/uploadcharity">Create a Charity</a>
+                    <a class="nav-link" href="/addcharity">Add a Charity</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/directory">Find a Charity</a>
@@ -191,43 +191,43 @@
     <!-- Add space here -->
     <div style="margin-top: 25px;"></div>
 	
-<h1>Create a Charity</h1>	
+<h1>Add a Charity</h1>	
 
 	<!-- Add space here -->
     <div style="margin-top: 25px;"></div>
 	
-    <form method="POST" action="{{ url_for('uploadcharity') }}" style="width: 80%; margin: 0 auto;">
-        {{ uploadcharity_form.hidden_tag() }}
+    <form method="POST" action="{{ url_for('addcharity') }}" style="width: 80%; margin: 0 auto;">
+        {{ addcharity_form.hidden_tag() }}
         <p>Charity Name:</p>
-            {{ uploadcharity_form.name(size=20, placeholder="Charity Name") }}
+            {{ addcharity_form.name(size=20, placeholder="Charity Name") }}
             <div style="margin-top: 25px;"></div>
         <p>Website:</p>
-            {{ uploadcharity_form.site(size=20, placeholder="Website") }}
+            {{ addcharity_form.site(size=20, placeholder="Website") }}
             <div style="margin-top: 25px;"></div>
         <p>Address:</p>
-            {{ uploadcharity_form.address(size=20, placeholder="Address") }}
+            {{ addcharity_form.address(size=20, placeholder="Address") }}
             <div style="margin-top: 25px;"></div>
         <p>Number:</p>
-            {{ uploadcharity_form.number(size=20, placeholder="Number") }}
+            {{ addcharity_form.number(size=20, placeholder="Number") }}
             <div style="margin-top: 25px;"></div>
         <p>Description:</p>
-            {{ uploadcharity_form.description(rows=5, placeholder="Description") }}
+            {{ addcharity_form.description(rows=5, placeholder="Description") }}
             <div style="margin-top: 25px;"></div>
         <p>Organization Type:</p>
-            {{ uploadcharity_form.orgtype() }}
+            {{ addcharity_form.orgtype() }}
             <div style="margin-top: 25px;"></div>
         <p>Keywords:</p>
-            {{ uploadcharity_form.keywords() }}
+            {{ addcharity_form.keywords() }}
             <div style="margin-top: 25px;"></div>
-        {{ uploadcharity_form.submit() }}
+        {{ addcharity_form.submit() }}
     </form>
     
     <!-- Add space here -->
     <div style="margin-top: 25px;"></div>
 
 <!-- Footer -->
-<footer class="text-black text-center p-4">
-    &copy; 2024 Alex Sheng, Dhruv Rakhade, and Tharun Naguleswaran. All rights reserved.
+<footer class="text-center p-4">
+    &copy; 2024 Dhruv Rakhade, Alex Sheng, and Tharun Naguleswaran. All rights reserved.
 </footer>
 
     <!-- Bootstrap & jQuery JS -->

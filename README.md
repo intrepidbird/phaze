@@ -6,7 +6,7 @@ Devpost: https://devpost.com/software/phaze
 
 Phaze is a web-based application that allows users to effortlessly find charities to donate to! This project contains HTML, CSS, and Flask files, along with a 'static' folder that holds various images and code. In this README, we will guide both newcomers and experienced developers through the key aspects of this project.
 
-This project is made for RocketHacks 2024 by **Alex Sheng, Dhruv Rakhade, and Tharun Naguleswaran**.
+This project is made for RocketHacks 2024 by **Dhruv Rakhade, Alex Sheng, and Tharun Naguleswaran**.
 
 ## Table of Contents
 - [Phaze](#phaze)
@@ -68,9 +68,8 @@ If you're new to web development or just want to use the application, here's a s
 
 Open the charity finder by following the "Getting Started" steps.
 
-1. You'll see an input field labeled "Create a Charity". You can create a good cause of your own and promote it on the internet now!
-2. Press the "Create" button, and the charity will appear on the map.
-3. Go to "Find a Charity" to find good causes to donate to!
+1. You'll see an page labeled "Add a Charity". You can add a pre-existing charity and promote it on the internet now!
+2. Press the "Add" button, and the charity will appear on the directory and on the map.
 
 ## Simplicity
 

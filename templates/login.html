@@ -161,7 +161,7 @@
                     <a class="nav-link" href="/#main-content">What is Phaze?</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/uploadcharity">Make a Charity</a>
+                    <a class="nav-link" href="/addcharity">Make a Charity</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/directory">View All Charities</a>
@@ -193,6 +193,15 @@
     <main class="container">
         <section id="login">
                 <h1>Login to your account</h1>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <ul class="flashes">
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
                 <div style="margin-top: 25px;"></div>
                 <form method="POST" action="">
                     {{ login_form.hidden_tag() }}
@@ -213,8 +222,8 @@
     <div style="margin-top: 250px;"></div>
 
     <!-- Footer -->
-    <footer class="bg-light text-black text-center p-4">
-        &copy; 2024 Alex Sheng, Dhruv Rakhade, and Tharun Naguleswaran. All rights reserved.
+    <footer class="text-center p-4">
+        &copy; 2024 Dhruv Rakhade, Alex Sheng, and Tharun Naguleswaran. All rights reserved.
     </footer>
 
     <!-- Bootstrap & jQuery JS -->
