@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request, flash
+from flask import Flask, render_template, redirect, url_for, request, flash, jsonify
 from flask_login import UserMixin, LoginManager, login_user, logout_user, current_user
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
@@ -6,6 +6,7 @@ from flask_bcrypt import Bcrypt
 from wtforms import widgets, StringField, PasswordField, SubmitField, TextAreaField, RadioField, SelectMultipleField
 from wtforms.validators import DataRequired
 from sqlalchemy.orm import relationship, joinedload
+import censusgeocode as cg
 import os
 
 app = Flask(__name__)
@@ -75,13 +76,14 @@ class AddCharityForm(FlaskForm):
                                        ('Refugee/Immigrant Assistance', 'Refugee/Immigrant Assistance'),
                                        ('Mental Health', 'Mental Health'),
                                        ('Education/Literacy', 'Education/Literacy'),
-                                       ('Environmental Conservation/Climate Change', 'Environmental Conservation/Climate Change'),
+                                       ('Environment', 'Environment'),
                                        ('Human Rights', 'Human Rights'),
                                        ('Animal Welfare', 'Animal Welfare'),
-                                       ('Homelessness', 'Homelessness'),
+                                       ('Poverty', 'Poverty'),
                                        ('Social Justice/Civil Rights', 'Social Justice/Civil Rights'),
                                        ('Hunger', 'Hunger'),
                                        ('Religious', 'Religious'),
+                                       ('Healthcare', 'Healthcare'),
                                        ('Other', 'Other')
                                    ])
     submit = SubmitField('Add Charity')
@@ -146,13 +148,14 @@ def directory():
         "Refugee/Immigrant Assistance",
         "Mental Health",
         "Education/Literacy",
-        "Environmental Conservation/Climate Change",
+        "Environment",
         "Human Rights",
         "Animal Welfare",
-        "Homelessness",
+        "Poverty",
         "Social Justice/Civil Rights",
         "Hunger",
         "Religious,"
+        "Healthcare,"
         "Other"
     ]
     keywords_dict = {keyword: keyword for keyword in keywords_list}
@@ -161,6 +164,20 @@ def directory():
     if selected_keyword:
         charities = [charity for charity in charities if any(keyword.word == selected_keyword for keyword in charity.keywords)]
     return render_template('directory.html', charities=charities, keywords=keywords_dict)
+
+@app.route('/map')
+def map():
+    charities = Charity.query.all() 
+    for charity in charities:
+        result = cg.onelineaddress(charity.address, returntype='locations')
+        if result and len(result) > 0:
+            location = result[0]['coordinates']
+            charity.latitude = location['y']
+            charity.longitude = location['x']
+            charity.keywords_list = ', '.join([keyword.word for keyword in charity.keywords])
+        else:
+            print(f"No results found for {charity.address}")
+    return render_template('map.html', charities=charities)
 
 @app.route("/")
 def index():

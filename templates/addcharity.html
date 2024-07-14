@@ -164,7 +164,10 @@
                     <a class="nav-link" href="/addcharity">Add a Charity</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/directory">Find a Charity</a>
+                    <a class="nav-link" href="/directory">Directory</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/map">Map</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/logout">Log Out</a>
@@ -201,7 +204,7 @@
         <p>Charity Name:</p>
             {{ addcharity_form.name(size=20, placeholder="Charity Name") }}
             <div style="margin-top: 25px;"></div>
-        <p>Website:</p>
+        <p>Website (Don't include https:// or www.)</p>
             {{ addcharity_form.site(size=20, placeholder="Website") }}
             <div style="margin-top: 25px;"></div>
         <p>Address:</p>

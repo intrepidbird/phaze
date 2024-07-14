@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Charity Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+    <style>
+        #map { height: 600px; }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script>
+    var map = L.map('map').setView([30, -40], 3); 
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '© OpenStreetMap contributors'}).addTo(map);
+    {% for charity in charities %}
+        L.marker([{{ charity.latitude }}, {{ charity.longitude }}]).addTo(map)
+        .bindPopup("<strong>Name:</strong> {{ charity.name }}<br><strong>Address:</strong> {{ charity.address }}<br><strong>Phone:</strong> {{ charity.number }}<br><strong>Website:</strong> {{ charity.site }}<br><strong>Organization Type:</strong> {{ charity.orgtype }}<br><strong>Keywords: </strong>{{ charity.keywords_list }}")
+    {% endfor %}
+</script>
+</body>
+</html>
