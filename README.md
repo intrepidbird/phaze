@@ -26,11 +26,11 @@ Phaze is a simple yet powerful tool that enables users with good intentions to f
 
 ## Our Purpose
 
-Phaze is designed to help not just those in need, but to also educate the common citizen on where charitable causes can be found. Users can advertise their own causes and movements on Phaze, which allows for charity organizers to receive a massive boost from Phaze.
+Phaze is designed to help not just those in need, but to also educate the common citizen on where charitable causes can be found. Users can see existing charities and movements on Phaze, which allows for charity organizers to receive a massive boost from Phaze.
 
 ### Key Features
 
-- Creating charities that will show up on our Google Map
+- Adding charities that will show up on our Google Map
 - A user-friendly web interface
 - Real-time map updates
 - A modern and sleek signup and login page
@@ -69,7 +69,7 @@ If you're new to web development or just want to use the application, here's a s
 Open the charity finder by following the "Getting Started" steps.
 
 1. You'll see an page labeled "Add a Charity". You can add a pre-existing charity and promote it on the internet now!
-2. Press the "Add" button, and the charity will appear on the directory and on the map.
+2. Press the "Upload Charity" button, and the charity will appear on the directory and on the map.
 
 ## Simplicity
 
