@@ -1,5 +1,8 @@
 # Phaze
 
+> [!IMPORTANT]  
+> **🥇 Phaze won 1st place overall in the Beginner Category at [RocketHacks 2024](https://stemplicityedu.com/rocket-hacks), earning the developer team (SigmaCS) around $1200**
+
 Devpost: https://devpost.com/software/phaze
 
 ### A sleek and modern project that encourages and allows individuals to find charities and donate to good causes
