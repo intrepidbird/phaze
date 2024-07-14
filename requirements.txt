@@ -5,5 +5,4 @@ flask_sqlalchemy==3.1.1
 flask_wtf==1.2.1
 markdown==3.6
 WTForms==3.1.2
-censusgeocode==1.2.0
 sqlalchemy==2.0.31
