@@ -26,7 +26,9 @@ Phaze is a simple yet powerful tool that enables users with good intentions to f
 
 ## Our Purpose
 
-Phaze is designed to help not just those in need, but to also educate the common citizen on where charitable causes can be found. Users can see existing charities and movements on Phaze, which allows for charity organizers to receive a massive boost from Phaze.
+Phaze is designed to help not just those in need, but to also educate everyone on where charitable causes can be found. Users can see existing charities and movements on Phaze, which allows for charity organizers to receive a massive boost from Phaze.
+
+*Disclaimer: User-uploaded charities may not always be legitimate. Users should use their own judgement.*
 
 ### Key Features
 
