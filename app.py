@@ -180,21 +180,6 @@ def directory():
         charities = [charity for charity in charities if any(keyword.word == selected_keyword for keyword in charity.keywords)]
     return render_template('directory.html', charities=charities, keywords=keywords_dict)
 
-@app.route('/map')
-def map():
-    charities = Charity.query.all()
-    for charity in charities:
-        result = cg.onelineaddress(charity.address, returntype='locations')
-        if result and len(result) > 0:
-            location = result[0]['coordinates']
-            charity.latitude = location['y']
-            charity.longitude = location['x']
-            charity.keywords_list = ', '.join([keyword.word for keyword in charity.keywords])
-            db.session.commit()  
-        else:
-            print(f"No results found for {charity.address}")
-    return render_template('map.html', charities=charities)
-
 
 @app.route("/")
 def index():
