@@ -34,14 +34,17 @@ class Keyword(db.Model):
     charity_id = db.Column(db.Integer, db.ForeignKey('charity.id'), nullable=False)
 
 class Charity(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String(128), nullable = False)
-    site = db.Column(db.String(128), unique = True, nullable = False)
-    address = db.Column(db.String(128), nullable = False)
-    number = db.Column(db.String(128), unique = True, nullable = False)
-    description = db.Column(db.String(280), unique = True, nullable = False)
-    orgtype = db.Column(db.String(128), nullable = False)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128), nullable=False)
+    site = db.Column(db.String(128), unique=True, nullable=False)
+    address = db.Column(db.String(128), nullable=False)
+    number = db.Column(db.String(128), unique=True, nullable=False)
+    description = db.Column(db.String(280), unique=True, nullable=False)
+    orgtype = db.Column(db.String(128), nullable=False)
+    latitude = db.Column(db.Float, nullable=True)  
+    longitude = db.Column(db.Float, nullable=True)  
     keywords = relationship('Keyword', backref='charity', lazy=True)
+
 
 db.init_app(app)
  
@@ -132,13 +135,25 @@ def addcharity():
     if current_user.is_authenticated:
         form = AddCharityForm()
         if form.validate_on_submit():
-            charity = Charity(name=form.name.data, site=form.site.data, address=form.address.data, number=form.number.data, description=form.description.data, orgtype=form.orgtype.data, keywords=[Keyword(word=keyword, charity_id=current_user.id) for keyword in form.keywords.data])
+            charity = Charity(
+                name=form.name.data,
+                site=form.site.data,
+                address=form.address.data,
+                number=form.number.data,
+                description=form.description.data,
+                orgtype=form.orgtype.data
+            )
             db.session.add(charity)
             db.session.commit()
+            for keyword in form.keywords.data:
+                keyword_entry = Keyword(word=keyword, charity_id=charity.id)
+                db.session.add(keyword_entry)
+            db.session.commit()
             return redirect(url_for('index'))
-        return render_template('addcharity.html', addcharity_form=form) 
+        return render_template('addcharity.html', addcharity_form=form)
     else:
         return redirect(url_for("login"))
+
 
 @app.route("/directory")
 def directory():
@@ -167,7 +182,7 @@ def directory():
 
 @app.route('/map')
 def map():
-    charities = Charity.query.all() 
+    charities = Charity.query.all()
     for charity in charities:
         result = cg.onelineaddress(charity.address, returntype='locations')
         if result and len(result) > 0:
@@ -175,9 +190,11 @@ def map():
             charity.latitude = location['y']
             charity.longitude = location['x']
             charity.keywords_list = ', '.join([keyword.word for keyword in charity.keywords])
+            db.session.commit()  
         else:
             print(f"No results found for {charity.address}")
     return render_template('map.html', charities=charities)
+
 
 @app.route("/")
 def index():
