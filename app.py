@@ -6,7 +6,6 @@ from flask_bcrypt import Bcrypt
 from wtforms import widgets, StringField, PasswordField, SubmitField, TextAreaField, RadioField, SelectMultipleField
 from wtforms.validators import DataRequired
 from sqlalchemy.orm import relationship, joinedload
-import censusgeocode as cg
 import os
 
 app = Flask(__name__)
